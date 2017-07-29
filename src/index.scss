@@ -1,5 +1,110 @@
-body {
+$react-color: #61DAFB;
+$text-color: #666;
+$square-border-color: $react-color;
+$square-text-color: lighten($text-color,30%);
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+html, body, div#root  {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font: 11px sans-serif;
+  color: $text-color;
+  background: black;
+  height: 100%;
+
+  .App {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    .App-header {
+      height: 84px;
+      padding: 4px;
+
+      .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+        height: 42px;
+      }
+
+      p {
+        margin: 2px;
+        padding: 2px;
+      }
+    }
+
+    .App-game {
+      flex-grow: 1;
+      .Game {
+        // border: 1px dotted $react-color;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        .game-3d-board {
+          $square-width: 35px;
+          $square-font-size: 12px;
+          $game-board-padding: 4px;
+          flex-grow: 3;
+          // border: 1px solid blue;
+          padding-top: 1.7*$square-width;
+          padding-bottom: 1.7*$square-width;
+          .game-board {
+            padding: $game-board-padding;
+            width: 2*$game-board-padding + 4*( $square-width - 4px);
+            // border: 1px solid gray;
+            margin: -2.5*$square-width auto;
+            transform: perspective(50000px) rotateX(60deg) rotateY(0deg) rotateZ(-20deg);
+            div {
+              width: 4*$square-width;
+              .board-row {
+                &:after {
+                  clear: both;
+                  content: "";
+                  display: table;
+                }
+                .Square {
+                  background: transparent;
+                  border: 1px solid $square-border-color;
+                  color: $square-text-color;
+                  float: left;
+                  font-size: $square-font-size;
+                  font-weight: bold;
+                  line-height: $square-width;
+                  margin-right: -1px;
+                  margin-top: -1px;
+                  padding: 0;
+                  text-align: center;
+                  width: $square-width;
+                  height: 1.4*$square-width;
+
+                  &:focus {
+                    outline: none;
+                    background: #333;
+                  }
+                  &:hover {
+                    cursor: pointer;
+                    background: #333;
+                }
+                }
+              }
+            }
+          }
+        }
+        .game-info {
+          flex-grow: 2;
+          padding-top: 7px;
+        }
+      }
+    }
+  }
+
+
+
 }
