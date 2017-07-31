@@ -19,9 +19,9 @@ function calculateWinner(squares) {
     [  3 ,  6 ,  9 , 12 ],
   ];
   // horizontal lines in a board
-  for (let i=0; i<4; i+=1) {
+  for (let i=0; i<4; i+=1) { // i: board index
     for (let k=0; k<lines.length; k+=1) {
-      const [a,b,c,d]  = lines[k];
+      const [a,b,c,d] = lines[k];
       if (squares[i][a] && squares[i][a]===squares[i][b] && squares[i][a]===squares[i][c] && squares[i][a]===squares[i][d]) {
         return {
           winner: squares[i][a],
@@ -32,16 +32,20 @@ function calculateWinner(squares) {
   }
   // diagonal lines from board 0 to 3
   for (let k=0; k<lines.length; k+=1) {
-    const [a,b,c,d]  = lines[k];
-    if (squares[0][a] && squares[0][a]===squares[1][b] && squares[0][a]===squares[2][c] && squares[0][a]===squares[3][d]) {
-      return {
-        winner: squares[0][a],
-        line: [[0,a],[1,b],[2,c],[3,d]]
-      };
+    const [x,y,z,t] = lines[k];
+    const diagonals = [ [x,y,z,t], [t,z,y,x] ];
+    for (let r=0; r<diagonals.length; r+=1) {
+      const [a,b,c,d] = diagonals[r];
+      if (squares[0][a] && squares[0][a]===squares[1][b] && squares[0][a]===squares[2][c] && squares[0][a]===squares[3][d]) {
+        return {
+          winner: squares[0][a],
+          line: [[0,a],[1,b],[2,c],[3,d]]
+        };
+      }
     }
   }
   // vertical lines from board 0 to 3
-  for (let j=0; j<16; j+=1) {
+  for (let j=0; j<16; j+=1) { // j: square index
     if (squares[0][j] && squares[0][j]===squares[1][j] && squares[0][j]===squares[2][j] && squares[0][j]===squares[3][j]) {
       return {
         winner: squares[0][j],
@@ -54,7 +58,9 @@ function calculateWinner(squares) {
 }
 
 function draw(squares) {
-  return [0,1,2,3].reduce((draw,i) => draw && squares[i].reduce((draw,square) => draw && square, true));
+  return [0,1,2,3].reduce((draw,board) =>
+    draw && squares[board].reduce((draw,square) =>
+      draw && square,true),true)
 }
 
 
@@ -69,7 +75,7 @@ class Game extends Component {
     };
   }
 
-  handleClick(i,j) {
+  handleClick(i,j) { // i: board index; j: square index
     const history = this.state.history.slice(0,this.state.pointer+1);
     const current = history[this.state.pointer];
     const squares = [0,1,2,3].map((n,i) => current.squares[i].slice());
@@ -109,7 +115,7 @@ class Game extends Component {
     const winner = calculateWinner(current.squares);
     const statusMSG =
       draw(current.squares) ?
-        <span className="draw">draw</span> :
+        <span className="draw">DRAW</span> :
           winner ?
             <span className="winner">Winner: <b>{winner.winner}</b></span> :
             <span className="next-player">Next player: {this.state.xIsNext ? <b>{X}</b> : <b>{O}</b>}</span>

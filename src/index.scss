@@ -72,7 +72,7 @@ html, body, div#root  {
             max-width: 50%;
             // border: 1px solid gray;
             margin: auto;
-            margin-top: -2*$square-width;
+            margin-top: -2.3*$square-width;
             transform: perspective(50000px) rotateX(60deg) rotateY(0deg) rotateZ(-20deg);
             > div {
               display: table;
@@ -130,7 +130,7 @@ html, body, div#root  {
                 font-size: 1.2em;
                 color: $game-status-color;
                 span {
-                  &.draw {}
+                  &.draw {font-weight: bold;}
                   &.winner {
                     b {font-size: 1.4em}
                   }
