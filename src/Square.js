@@ -1,16 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './index.css';
 
-class Square extends Component {
-  render() {
-    const i = this.props.i;
-    const j = this.props.j;
-    return (
-      <button className="Square">
-        {`${i},${j}`}
-      </button>
-    );
-  }
+function Square(props) {
+  const winner = props.winner ? ' winner' : '';
+  return (
+    <button className={`Square${winner}`} onClick={props.onClick}>
+      {props.value}
+      {/* {`${i},${j}`} */}
+    </button>
+  );
 }
 
 export default Square;

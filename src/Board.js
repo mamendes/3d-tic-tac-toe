@@ -5,7 +5,13 @@ import './index.css';
 class Board extends Component {
 
   renderSquare(i,j) {
-    return <Square i={i} j={j} />;
+    return (
+      <Square
+        value={this.props.squares[j]}
+        onClick={() => this.props.onClick(j)}
+        winner={this.props.winnerLine.reduce((winner,coords) => winner || (coords[0]===i &&  coords[1]===j), false)}
+      />
+    );
   }
 
   render() {
