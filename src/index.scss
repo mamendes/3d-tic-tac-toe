@@ -6,15 +6,24 @@ $square-hover-color: darken($react-color,50%);
 $square-focus-color: darken($react-color,60%);
 $square-text-color: lighten($react-color,20%);
 
+$game-info-border-color: darken($react-color,55%);
+$game-info-bg-color: darken($react-color,65%);
+$game-status-text-color: darken($react-color,25%);
+$game-status-border-color: darken($react-color,55%);
+
 $text-color: darken($react-color,40%);
 $link-color: darken($react-color,25%);
-
-$game-status-color: darken($react-color,25%);
 
 $square-width: 35px;
 $square-height: 48px;
 $square-font-size: 28px;
+
+
 $game-board-padding: 4px;
+$game-info-width: 105px;
+
+$schrollbar-width: 6px;
+$schrollbar-height: 6px;
 
 @keyframes App-logo-spin {
   from {transform: rotate(0deg)}
@@ -26,16 +35,35 @@ $game-board-padding: 4px;
   to {background: $square-focus-color}
 }
 
-html, body, div#root  {
+body::-webkit-scrollbar,
+div::-webkit-scrollbar {
+  width: $schrollbar-width;
+  height: $schrollbar-height;
+}
+
+body::-webkit-scrollbar-track,
+div::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: darken($react-color,50%);
+}
+
+body::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: darken($react-color,35%);
+}
+
+* {
   margin: 0;
   padding: 0;
+}
+
+html, body, div#root  {
   font: 10px sans-serif;
   color: $text-color;
   background: black;
   height: 100%;
   .App {
-    margin: 0;
-    padding: 0;
     height: 100%;
     text-align: center;
     display: flex;
@@ -58,21 +86,18 @@ html, body, div#root  {
       flex-grow: 1;
       .Game {
         // border: 1px dotted $react-color;
+        padding: 2px;
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
-        $margin: 14px;
+        justify-content: center;
         .game-3d-board {
-          margin-left: $margin;
-          flex-grow: 3;
-          padding-top: $square-height;
+          width: 1.75*($square-width + $square-height);
+          min-width: 1.75*($square-width + $square-height);
+          height: 4*($square-width + $square-height);
+          padding: $square-height;
+          // border: 1px solid yellow;
           .game-board {
-            padding: $game-board-padding;
-            min-width: 4*$game-board-padding + 4*$square-width;
-            max-width: 50%;
-            // border: 1px solid gray;
-            margin: auto;
-            margin-top: -2.3*$square-width;
+            margin-top: -2.1*$square-width;
             transform: perspective(50000px) rotateX(60deg) rotateY(0deg) rotateZ(-20deg);
             > div {
               display: table;
@@ -89,7 +114,6 @@ html, body, div#root  {
                   line-height: $square-width;
                   margin-right: -1px;
                   margin-top: -1px;
-                  padding: 0;
                   text-align: center;
                   width: $square-width;
                   height: $square-height;
@@ -110,75 +134,57 @@ html, body, div#root  {
           }
         }
         .game-info {
-          margin-right: $margin;
-          flex-grow: 2;
-          padding-top: 7px;
-          text-align: left;
-          // border: 1px solid #666;
+          margin-left: 14px;
+          margin-right: 14px;
+          border: 3px double $game-info-border-color;
+          padding: 6px;
+          width: $game-info-width;
+          min-width: $game-info-width;
+          background: $game-info-bg-color;
           .height-100 {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
+            text-align: left;
+            // height: 100%;
+            button {
+              border: none;
+              color: $link-color;
+              background: transparent;
+              &:focus {outline: none}
+              &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+              }
+            }
+            span.game-start {}
+            span.move {}
+            span.arrow {
+              padding-left: 7px;
+              font-weight: bold;
+            }
             > div {
-              margin: 0;
-              padding: 0;
               &.game-status {
-                // background: #336;
-                height: 21px;
-                line-height: 21px;
-                font-size: 1.2em;
-                color: $game-status-color;
-                span {
-                  &.draw {font-weight: bold;}
-                  &.winner {
-                    b {font-size: 1.4em}
-                  }
-                  &.next-player {
-                    b {font-size: 1.4em}
+                width: $game-info-width - 2*$schrollbar-width;
+                border-bottom: 1px solid $game-status-border-color;
+                color: $game-status-text-color;
+                > p {
+                  line-height: 21px;
+                  font-size: 1.2em;
+                  span {
+                    &.draw { b {} }
+                    &.winner { b {font-size: 1.4em} }
+                    &.next-player { b {font-size: 1.4em} }
                   }
                 }
               }
               &.game-history {
-                // background: #633;
-                flex-grow: 1;
-                $left: 17px;
+                overflow: auto;
+                margin-top: 4px;
+                padding-top: 2px;
+                height: 4.75*($square-width + $square-height);
                 ol {
-                  // border: 1px solid blue;
-                  margin: 0;
-                  padding: 0px;
-                  padding-left: $left;
+                  padding-left: 17px;
                   li {
-                    // border: 1px solid gray;
-                    min-width: 75px;
-                    margin: 0;
-                    padding: 0;
-                    &:first-child {
-                      list-style-type: none;
-                      margin-top: 4px;
-                      margin-bottom: 4px;
-                      margin-left: -$left;
-                    }
-                    button {
-                      border: none;
-                      margin: 0;
-                      padding: 0;
-                      color: $link-color;
-                      background: transparent;
-                      &:focus {outline: none}
-                      &:hover {
-                        text-decoration: underline;
-                        cursor: pointer;
-                      }
-                      span {
-                        &.move {}
-                        &.game-start {}
-                      }
-                    }
-                    > span {
-                      padding-left: 7px;
-                      &.arrow {font-weight: bold}
-                    }
+                    min-width: $game-info-width - 30px;
+                    white-space: nowrap;
                   }
                 }
               }
