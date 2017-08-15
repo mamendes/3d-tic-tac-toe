@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
 import './index.css';
 
+
 class GameInfo extends Component  {
+
+  pixelsToScroll() {
+    let {offsetHeight: hdHeight} = this.historyDiv;
+    let {offsetHeight: hlHeight} = this.historyList;
+    let ΔHeight = hdHeight - hlHeight;
+    return ΔHeight < 0 ? -ΔHeight : 0;
+  }
 
   renderArrow() {
     return (
-      <span className="arrow" ref={e => {this.arrow = e}}> ⇦ </span>
+      <span className="arrow"> ⇦ </span>
     );
   }
 
   componentDidMount() {
-    this.arrow.scrollIntoView();
+    this.historyDiv.scrollTop += this.pixelsToScroll();
   }
 
   componentDidUpdate() {
-    this.arrow.scrollIntoView();
+    this.historyDiv.scrollTop += this.pixelsToScroll();
   }
 
   render() {
@@ -46,8 +54,8 @@ class GameInfo extends Component  {
               {this.props.pointer === 0 && this.renderArrow()}
             </p>
           </div>
-          <div className="game-history">
-            <ol>
+          <div className="game-history" ref={e => {this.historyDiv = e}}>
+            <ol ref={e => {this.historyList = e}}>
               {
                 this.props.history.slice(1).map((step,i) => {
                   const move = i + 1;
