@@ -23,19 +23,27 @@ class GameInfo extends Component  {
         <div className="height-100">
           <div className="game-status">
             <p>
-              {
+              score: {
                 this.props.draw ?
                   <span className="draw">
                     <b>DRAW</b>
                   </span> :
-                this.props.winner ?
+                this.props.winners && this.props.winners.score ?
                   <span className="winner">
-                    Winner: <b>{this.props.winner.winner}</b>
-                  </span> :
-                  <span className="next-player">
-                    Next player: <b>{this.props.xIsNext ? this.props.X : this.props.O}</b>
-                  </span>
+                    {
+                      Object.keys(this.props.winners.score).map(player => (
+                        <span key={player} style={{display:'block'}}>
+                          <b>{player}</b> ({this.props.winners.score[player]})
+                        </span>
+                      ))
+                    }
+                  </span> :  <span />
               }
+            </p>
+            <p>
+              <span className="next-player">
+                next player: <b>{this.props.xIsNext ? this.props.X : this.props.O}</b>
+              </span>
             </p>
             <p>
               <button onClick={() => this.props.jumpTo(0)}>
