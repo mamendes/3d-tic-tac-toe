@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board.js';
 import GameInfo from './GameInfo.js';
-import { calculateWinner } from './helpers.js';
+import { calculateWinners } from './helpers.js';
 import './index.css';
 
 const X = 'x';
@@ -22,7 +22,8 @@ class Game extends Component {
     const history = this.state.history.slice(0,this.state.pointer+1);
     const current = history[this.state.pointer];
     const squares = [0,1,2,3].map((n,board) => current.squares[board].slice());
-    if (calculateWinner(squares) || squares[board][square])
+    // if (calculateWinners(squares) || squares[board][square])
+    if (squares[board][square])
       return;
     squares[board][square] = this.state.xIsNext ? X : O;
     this.setState({
@@ -39,13 +40,13 @@ class Game extends Component {
     });
   }
 
-  renderBoard(board,winner) {
+  renderBoard(board,winners) {
     const history = this.state.history;
     const current = history[this.state.pointer];
     return (
       <Board
         squares={current.squares[board]}
-        winnerLine={winner ? winner.line : []}
+        winnersLines={winners ? winners.reduce((lines,winner) => {lines.push(winner.line); return lines}, []) : []}
         onClick={square => this.handleClick(board,square)}
         board={board}
       />
@@ -55,28 +56,28 @@ class Game extends Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.pointer];
-    const winner = calculateWinner(current.squares);
+    const winners = calculateWinners(current.squares);
     return (
       <div className="Game">
         <div className="game-3d-board">
           <div className="game-board">
-            {this.renderBoard(0,winner)}
+            {this.renderBoard(0,winners)}
           </div>
           <div className="game-board">
-            {this.renderBoard(1,winner)}
+            {this.renderBoard(1,winners)}
           </div>
           <div className="game-board">
-            {this.renderBoard(2,winner)}
+            {this.renderBoard(2,winners)}
           </div>
           <div className="game-board">
-            {this.renderBoard(3,winner)}
+            {this.renderBoard(3,winners)}
           </div>
         </div>
         <GameInfo
           X={X}
           O={O}
-          winner={winner}
-          draw={!winner && this.state.pointer===64}
+          winners={winners}
+          draw={!winners && this.state.pointer===64}
           history={history}
           xIsNext={this.state.xIsNext}
           pointer={this.state.pointer}

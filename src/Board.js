@@ -9,10 +9,12 @@ class Board extends Component {
       <Square
         value={this.props.squares[square]}
         onClick={() => this.props.onClick(square)}
-        winner={this.props.winnerLine.reduce((winner,coords) => winner || (coords[0]===board &&  coords[1]===square),false)}
+        winner={this.props.winnersLines.reduce((winner,winnerLine) => winner || winnerLine.reduce((winner,coords) => winner || (coords[0]===board &&  coords[1]===square), false), false)}
       />
     );
   }
+
+  // winner={this.props.winnerLine.reduce((winner,coords) => winner || (coords[0]===board &&  coords[1]===square),false)}
 
   render() {
     const board = this.props.board;
