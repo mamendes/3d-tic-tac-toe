@@ -5,6 +5,7 @@
   "author": "Marco A. Mendes",
   "license": "MIT",
   "private": true,
+  "homepage": "https://mamendes.github.io/3d-tic-tac-toe/",
   "dependencies": {
     "node-sass-chokidar": "^0.0.3",
     "npm-run-all": "^4.0.2",
